@@ -1,13 +1,15 @@
 #-----------------------------------------------------------------
 # These examples shows how to fit a network using the naive 
-# algorithm, either to the basic model, or to the full model
-# with a non-metric kernel. In both cases, the FMM algorithm
-# can not be used.
+# algorithm, either to the basic model, to the full model with a
+# metric kernel, or to the full model with the rank-distance
+# kernel. 
 #
 # In the naive algorithm, the pairwise distance between vertices
 # is calculated upfront and stored (passed) in matrix ``D''.
 # (1) For the basic model, ``K_{uv} = \delta_{uv}''.
-# (2) For the full model with symmetric rank-distance kernel
+# (2) For the full model with Euclidean kernel
+#     ``D = Euclidean_matrix(coordinates)''.
+# (3) For the full model with symmetric rank-distance kernel
 #     ``D = rank_distance_matrix(Euclidean_matrix(coordinates))''.
 #-----------------------------------------------------------------
 
@@ -93,13 +95,28 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
     #--------------------------------
     if (epsilon > 0)
         #----------------------------
-        error("epsilon <= 0 in these examples.")
+        D = Euclidean_matrix(coordinates);
+        #----------------------------
+
+        #----------------------------
+        # learn model parameters
+        #----------------------------
+        theta, epsilon = SCP.model_fit(A, D, epsilon; opt=opt);
+        #----------------------------
+
+        #----------------------------
+        # generate random networks
+        #----------------------------
+        B = SCP.model_gen(theta, D, epsilon);
         #----------------------------
     elseif (epsilon < 0)
         #----------------------------
         epsilon *= -1.0;
+        #----------------------------
 
+        #----------------------------
         D = rank_distance_matrix(Euclidean_matrix(coordinates));
+        #----------------------------
 
         #----------------------------
         # learn model parameters
@@ -113,11 +130,13 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
         B = SCP.model_gen(theta, D, epsilon);
         #----------------------------
 
+        #----------------------------
         epsilon *= -1.0;
         #----------------------------
     else
         #----------------------------
         D = ones(A)-eye(A);
+        #----------------------------
 
         #----------------------------
         # learn model parameters
@@ -134,17 +153,26 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
 
     return A, B, theta, coordinates, epsilon;
 end
+#----------------------------------------------------------------
 
 
 
 #----------------------------------------------------------------
 # usage: fit to celegans network to the basic model
 #----------------------------------------------------------------
-A,B,theta,coordinates,epsilon = test_celegans(0.0; ratio=1.00, max_num_step=300, opt_epsilon=false)
+# A,B,theta,coordinates,epsilon = test_celegans(0.0; ratio=1.00, max_num_step=300, opt_epsilon=false)
 #----------------------------------------------------------------
 
+
 #----------------------------------------------------------------
-# usage: fit to celegans network with rank distance kernel
+# usage: fit to celegans network with Euclidean kernel
+#----------------------------------------------------------------
+A,B,theta,coordinates,epsilon = test_celegans(1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
+#----------------------------------------------------------------
+
+
+#----------------------------------------------------------------
+# usage: fit to celegans network with rank-distance kernel
 #----------------------------------------------------------------
 # A,B,theta,coordinates,epsilon = test_celegans(-1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
 #----------------------------------------------------------------
