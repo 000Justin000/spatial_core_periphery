@@ -4,7 +4,7 @@
 #
 # In the fmm algorithm, the pairwise distance between vertices is
 # calculated on the fly and the coordinate of vertices are passed
-# in to the fitting function.  The fmm algorithm takes two arguments
+# in to the fitting function. The fmm algorithm takes two arguments
 # that allows user to define and use their own kernel function.
 # (1) The ``metric'', in this case ``Haversine(6371e3)''.
 # (2) The ``center-of-mass'' function used in building the metric
