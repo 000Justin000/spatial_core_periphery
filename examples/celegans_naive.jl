@@ -1,4 +1,17 @@
-push!(LOAD_PATH, "/home/junteng/Documents/publications/repos/spatial_core_periphery/module");
+#-----------------------------------------------------------------
+# These examples shows how to fit a network using the naive 
+# algorithm, either to the basic model, or to the full model
+# with a non-metric kernel. In both cases, the FMM algorithm
+# can not be used.
+#
+# In the naive algorithm, the pairwise distance between vertices
+# is calculated upfront and stored (passed) in matrix ``D''.
+# (1) For the basic model, ``K_{uv} = \delta_{uv}''.
+# (2) For the full model with symmetric rank-distance kernel
+#     ``D = rank_distance_matrix(Euclidean_matrix(coordinates))''.
+#-----------------------------------------------------------------
+
+push!(LOAD_PATH, pwd() * "/../module");
 
 using StatsBase;
 using MAT;
@@ -7,17 +20,6 @@ using Distances;
 using Distributions;
 using NearestNeighbors;
 using SCP;
-
-#----------------------------------------------------------------
-function Euclidean_CoM2(coord1, coord2, m1=1.0, m2=1.0)
-    if (m1 == 0.0 && m2 == 0.0)
-        m1 = 1.0;
-        m2 = 1.0;
-    end
-
-    return (coord1*m1+coord2*m2)/(m1+m2);
-end
-#----------------------------------------------------------------
 
 #----------------------------------------------------------------
 function Euclidean_matrix(coords)
