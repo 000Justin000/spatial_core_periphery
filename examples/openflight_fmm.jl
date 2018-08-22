@@ -1,4 +1,26 @@
-push!(LOAD_PATH, "/home/junteng/Documents/publications/repos/spatial_core_periphery/module");
+#-------------------------------------------------------------------
+# These examples shows how to fit a network using the fmm
+# algorithm, to the full model with a metric kernel.
+#
+# In the fmm algorithm, the pairwise distance between vertices is
+# calculated on the fly and the coordinate of vertices are passed
+# in to the fitting function. The fmm algorithm takes two arguments
+# that allows user to define and use their own kernel function.
+# (1) The ``metric'', in this case ``Haversine(6371e3)''.
+# (2) The ``center-of-mass'' function used in building the metric
+#     tree, in this case ``Haversine_CoM2''.
+#
+# When computing the objective function and its gradient, as well
+# as sampling a network, the fmm algorithm can also explicitly treat
+# contributions from a fraction of vertices with the highest core 
+# scores, and that fraction is defined in ``opt["ratio"]''. The
+# better way to control accuracy is through the accuracy parameters 
+# ``opt["delta_1"] and ``opt["delta_2"]. In general, we recommend
+# setting ``opt["ratio"] = 0.0'', ``opt["delta_1"] = 2.0'' and
+# ``opt["delta_2"] = 0.2''.
+#-------------------------------------------------------------------
+
+push!(LOAD_PATH, pwd() * "/../module");
 
 using StatsBase;
 using MAT;

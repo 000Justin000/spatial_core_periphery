@@ -1,4 +1,19 @@
-push!(LOAD_PATH, "/home/junteng/Documents/publications/repos/spatial_core_periphery/module");
+#-----------------------------------------------------------------
+# These examples shows how to fit a network using the naive 
+# algorithm, either to the basic model, to the full model with a
+# metric kernel, or to the full model with the rank-distance
+# kernel. 
+#
+# In the naive algorithm, the pairwise distance between vertices
+# is calculated upfront and stored (passed) in matrix ``D''.
+# (1) For the basic model, ``K_{uv} = \delta_{uv}''.
+# (2) For the full model with Euclidean kernel
+#     ``D = Euclidean_matrix(coordinates)''.
+# (3) For the full model with symmetric rank-distance kernel
+#     ``D = rank_distance_matrix(Euclidean_matrix(coordinates))''.
+#-----------------------------------------------------------------
+
+push!(LOAD_PATH, pwd() * "/../module");
 
 using StatsBase;
 using MAT;
@@ -7,17 +22,6 @@ using Distances;
 using Distributions;
 using NearestNeighbors;
 using SCP;
-
-#----------------------------------------------------------------
-function Euclidean_CoM2(coord1, coord2, m1=1.0, m2=1.0)
-    if (m1 == 0.0 && m2 == 0.0)
-        m1 = 1.0;
-        m2 = 1.0;
-    end
-
-    return (coord1*m1+coord2*m2)/(m1+m2);
-end
-#----------------------------------------------------------------
 
 #----------------------------------------------------------------
 function Euclidean_matrix(coords)
@@ -91,13 +95,28 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
     #--------------------------------
     if (epsilon > 0)
         #----------------------------
-        error("epsilon <= 0 in these examples.")
+        D = Euclidean_matrix(coordinates);
+        #----------------------------
+
+        #----------------------------
+        # learn model parameters
+        #----------------------------
+        theta, epsilon = SCP.model_fit(A, D, epsilon; opt=opt);
+        #----------------------------
+
+        #----------------------------
+        # generate random networks
+        #----------------------------
+        B = SCP.model_gen(theta, D, epsilon);
         #----------------------------
     elseif (epsilon < 0)
         #----------------------------
         epsilon *= -1.0;
+        #----------------------------
 
+        #----------------------------
         D = rank_distance_matrix(Euclidean_matrix(coordinates));
+        #----------------------------
 
         #----------------------------
         # learn model parameters
@@ -111,11 +130,13 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
         B = SCP.model_gen(theta, D, epsilon);
         #----------------------------
 
+        #----------------------------
         epsilon *= -1.0;
         #----------------------------
     else
         #----------------------------
         D = ones(A)-eye(A);
+        #----------------------------
 
         #----------------------------
         # learn model parameters
@@ -132,17 +153,26 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
 
     return A, B, theta, coordinates, epsilon;
 end
+#----------------------------------------------------------------
 
 
 
 #----------------------------------------------------------------
 # usage: fit to celegans network to the basic model
 #----------------------------------------------------------------
-A,B,theta,coordinates,epsilon = test_celegans(0.0; ratio=1.00, max_num_step=300, opt_epsilon=false)
+# A,B,theta,coordinates,epsilon = test_celegans(0.0; ratio=1.00, max_num_step=300, opt_epsilon=false)
 #----------------------------------------------------------------
 
+
 #----------------------------------------------------------------
-# usage: fit to celegans network with rank distance kernel
+# usage: fit to celegans network with Euclidean kernel
+#----------------------------------------------------------------
+A,B,theta,coordinates,epsilon = test_celegans(1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
+#----------------------------------------------------------------
+
+
+#----------------------------------------------------------------
+# usage: fit to celegans network with rank-distance kernel
 #----------------------------------------------------------------
 # A,B,theta,coordinates,epsilon = test_celegans(-1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
 #----------------------------------------------------------------
