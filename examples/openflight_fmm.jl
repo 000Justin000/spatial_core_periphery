@@ -140,7 +140,7 @@ end
 #----------------------------------------------------------------
 
 #----------------------------------------------------------------
-# usage: fit to celegans network with Euclidean kernel and FMM
+# usage: fit to OpenFlights network with Haversine kernel and FMM
 #----------------------------------------------------------------
 A,B,theta,coordinates,epsilon = test_openflight(1.0; ratio=0.00, max_num_step=300, opt_epsilon=true)
 #----------------------------------------------------------------

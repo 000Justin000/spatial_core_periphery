@@ -1,4 +1,4 @@
-# spatial_core_periphery
+# Detecting Core-Periphery Structure in Spatial Networks
 
 ### This repository hosts the code and some example data for the following paper:  
 [Detecting Core-Periphery Structure in Spatial Networks](https://arxiv.org/abs/1808.06544)  
