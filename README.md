@@ -39,7 +39,8 @@ Given vertex coordinates and vertex core scores, our model sample an instance of
 B = SCP_FMM.model_gen(theta, coords, Euclidean_CoM2, Euclidean(), epsilon; opt=opt);
 ```
 
-**Output**: `B` is the adjacency matrix of the generated random network.
+**Output**:
+- `B` is the adjacency matrix of the generated random network.
 
 For a more detailed explanation, please (see [examples](/examples)).
 
