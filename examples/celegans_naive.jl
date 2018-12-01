@@ -13,7 +13,7 @@
 #     ``D = rank_distance_matrix(Euclidean_matrix(coordinates))''.
 #-----------------------------------------------------------------
 
-push!(LOAD_PATH, pwd() * "/../module");
+push!(LOAD_PATH, "./module");
 
 using StatsBase;
 using MAT;
@@ -67,7 +67,7 @@ function test_celegans(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000, o
     #--------------------------------
     # load celegans data
     #--------------------------------
-    data = MAT.matread("../data/celegans/celegans277.mat");
+    data = MAT.matread("./data/celegans/celegans277.mat");
     coords = data["celegans277positions"]';
     A = spones(convert(SparseMatrixCSC{Float64,Int64}, sparse(data["celegans277matrix"] + data["celegans277matrix"]')));
     #--------------------------------
@@ -167,7 +167,7 @@ end
 #----------------------------------------------------------------
 # usage: fit to celegans network with Euclidean kernel
 #----------------------------------------------------------------
-A,B,theta,coordinates,epsilon = test_celegans(1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
+A,B,theta0,coordinates,epsilon = test_celegans(1.0; ratio=1.00, max_num_step=300, opt_epsilon=true)
 #----------------------------------------------------------------
 
 

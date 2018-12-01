@@ -20,7 +20,7 @@
 # ``opt["delta_2"] = 0.2''.
 #-------------------------------------------------------------------
 
-push!(LOAD_PATH, pwd() * "/../module");
+push!(LOAD_PATH, "./module");
 
 using StatsBase;
 using MAT;
@@ -63,7 +63,7 @@ function test_openflight(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000,
     #--------------------------------
     # load airport data and location
     #--------------------------------
-    airports_dat = readcsv("../data/open_airlines/airports.dat");
+    airports_dat = readcsv("./data/open_airlines/airports.dat");
     num_airports = size(airports_dat,1);
     no2id = Dict{Int64, Int64}();
     id2no = Dict{Int64, Int64}();
@@ -80,7 +80,7 @@ function test_openflight(epsilon=-1; ratio=1.0, thres=1.0e-6, max_num_step=1000,
     #--------------------------------
     # the adjacency matrix
     #--------------------------------
-    routes_dat = readcsv("../data/open_airlines/routes.dat");
+    routes_dat = readcsv("./data/open_airlines/routes.dat");
     num_routes = size(routes_dat,1);
     for i in 1:num_routes
         id1 = routes_dat[i,4];

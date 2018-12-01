@@ -42,6 +42,16 @@ B = SCP_FMM.model_gen(theta, coords, Euclidean_CoM2, Euclidean(), epsilon; opt=o
 **Output**:
 - `B` is the adjacency matrix of the generated random network.
 
-For a more detailed explanation, please (see [examples](/examples)).
+### Examples
+For a more detailed explanation, please (see [examples](/examples)). For instance, the following code snippet reproduces figure 4 (A) in our paper.
+
+```julia
+include("examples/celegans_naive.jl");
+include("examples/celegans_fmm.jl");
+using Plots;
+
+Plots.plot(size=(550,500),-5.0:0.1:1.0,-5.0:0.1:1.0,framestyle=:box,label="ideal",color="red",legend=:topleft);
+Plots.scatter!(theta0,theta,label="experiment",color="blue")
+```
 
 If you have any questions, please email to [jj585@cornell.edu](mailto:jj585@cornell.edu).
