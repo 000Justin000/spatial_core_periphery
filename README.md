@@ -30,7 +30,9 @@ theta, epsilon = SCP_FMM.model_fit(A, coords, Euclidean_CoM2, Euclidean(), epsil
 - `A` is the |V| x |V| adjacency matrix of the input network.
 - `coords` is a d x |V| matrix with the vertex coordinates.
 - `Euclidean_CoM2` is a function that compute the center-of-mass between two vertices.
-- `Euclidean()` is the metric kernel, and `epsilon` is the initial value for the length scale parameter.
+- `Euclidean()` is the metric kernel.
+- `epsilon` is the initial value for the length scale parameter.
+- `opt` is a dictionary containing user defined parameters.
 
 ### Network generation
 Given vertex coordinates and vertex core scores, our model sample an instance of random network. Here is the code snippet for generating a random network for celegans dataset.
