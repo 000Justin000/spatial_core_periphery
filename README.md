@@ -22,11 +22,15 @@ Given vertex coordinates and network topology, our model infer the vertex `core 
 theta, epsilon = SCP_FMM.model_fit(A, coords, Euclidean_CoM2, Euclidean(), epsilon; opt=opt);
 ```
 
-**Output**: `theta` is the vertex core scores; `epsilon` is a parameter in our model that defines the edge length scale.
+**Output**: 
+- `theta` is the vertex core scores.
+- `epsilon` is a parameter in our model that defines the edge length scale.
 
-**Input**: `A` is the |V| x |V| adjacency matrix of the input network, and `coords` is a |D| x |V| matrix with the vertex coordinates.
-`Euclidean_CoM2` is a function that compute the center-of-mass between two vertices. `Euclidean()` is the metric kernel, and `epsilon`
-is the initial value for the length scale parameter.
+**Input**: 
+- `A` is the |V| x |V| adjacency matrix of the input network.
+- `coords` is a |D| x |V| matrix with the vertex coordinates.
+- `Euclidean_CoM2` is a function that compute the center-of-mass between two vertices.
+- `Euclidean()` is the metric kernel, and `epsilon` is the initial value for the length scale parameter.
 
 ### Network generation
 Given vertex coordinates and vertex core scores, our model sample an instance of random network. Here is the code snippet for generating a random network for celegans dataset.
