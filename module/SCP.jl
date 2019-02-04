@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------------
 module SCP
-using Optim
+    using Optim
 
     export model_fit, model_gen
 
@@ -102,26 +102,24 @@ using Optim
         g!(storage, x) =  negative_gradient_omega!(A,x[1:end-1],D,x[end],sum_logD_inE,storage, opt["opt_epsilon"])
 
         #-----------------------------------------------------------------------------
-        println("starting optimization:")
+        println("starting optimization:");
         #-----------------------------------------------------------------------------
-        precond = speye(length(theta)+1); precond[end,end] = length(theta);
+        precond = speye(length(theta)+1) * length(theta); precond[end,end] *= length(theta);
         optim = optimize(f, g!, vcat(theta,[epsilon]), LBFGS(P = precond), Optim.Options(g_tol = opt["thres"],
                                                                                      iterations = opt["max_num_step"],
                                                                                      show_trace = true,
                                                                                      show_every = 1,
                                                                                      allow_f_increases = false));
         #-----------------------------------------------------------------------------
-        println(optim);
-        #-----------------------------------------------------------------------------
 
         theta = optim.minimizer[1:end-1];
         epsilon = optim.minimizer[end];
 
-        println(epsilon);
+        # println(epsilon);
 
-        println(omega(A,theta,D,epsilon));
+        # println(omega(A,theta,D,epsilon));
         @assert epsilon >= 0;
-        return theta, epsilon;
+        return theta, epsilon, optim;
     end
     #-----------------------------------------------------------------------------
 
