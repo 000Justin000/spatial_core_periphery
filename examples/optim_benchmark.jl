@@ -4,7 +4,9 @@
 # There are two major functions in this file,
 # (1) ``synthetic_network'' takes parameters in our model as inputs
 #     returns the adjacency matrix of a random network
-# (2) ``''
+# (2) ``benchmark_synthetic_network'' calls ``synthetic_network'' to
+#     get the adjacency matrix, then use our algorithm to compute
+#     model parameters, finally, an optim object is returned.
 #-------------------------------------------------------------------
 
 push!(LOAD_PATH, "./module");
